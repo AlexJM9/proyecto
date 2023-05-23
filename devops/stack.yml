@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    image: grupo6backend:1
+    ports:
+      - target: 8086
+        published: 8086
+        protocol: tcp
+        mode: host
+    networks:
+      - desarrollo_net
+  db6:
+    image: postgres:15.0-bullseye
+    environment:
+      - TZ=America/Guayaquil
+      - POSTGRES_DB=proyecto6
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_USER=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - pg_tendencia_grupseis:/var/lib/postgresql/data/pgdata
+    networks:
+      - desarrollo_net
+           
+volumes:
+  pg_tendencia_grupseis:
+    external: true
+
+networks:
+  desarrollo_net:
+    external: true
+
+secrets:
+  db_dev_pass:
+    external: true  
