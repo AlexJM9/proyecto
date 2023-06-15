@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    image: pedidosbackend:1
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: host
+    networks:
+      - desarrollo_net
+  db:
+    image: postgres:15.0-bullseye
+    environment:
+      - TZ=America/Guayaquil
+      - POSTGRES_DB=pedidosdb
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - pg_tendencia_data:/var/lib/postgresql/data/pgdata
+    networks:
+      - desarrollo_net
+           
+volumes:
+  pg_tendencia_data:
+    external: true
+
+networks:
+  desarrollo_net:
+    external: true
+
+secrets:
+  db_dev_pass:
+    external: true  
